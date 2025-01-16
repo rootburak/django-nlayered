@@ -6,12 +6,39 @@
   <title>nlayered</title>
 </head>
 <body>
-  <form method="post" action="">
-    <input type="text" placeholder="enter name">
-    <input type="email" placeholder"enter mail">
-    <input type="password" placeholder"enter password">
+  <form method="post" action="adduser">
+    {% csrf_token %}
+    <input name="name" type="text" placeholder="enter name">
+    <input name="email"type="email" placeholder="enter mail">
+    <input name="password"  type="password" placeholder="enter password">
     <button type="submit">Send</button>
   </form>
+  <ul>
 
+  </ul>
+  <button type="submit" id="button">get users</button>
 </body>
+
+<script>
+     fetch("allusers")
+        .then(response => {
+            if (!response.ok) { 
+                console.error("Getting error");
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            let ul = document.querySelector("ul");
+            ul.innerHTML = ""; 
+            data.forEach(user => {
+                let li = document.createElement("li");
+                li.textContent = user.name;
+                ul.appendChild(li);
+            });
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+        });
+</script>
 </html>

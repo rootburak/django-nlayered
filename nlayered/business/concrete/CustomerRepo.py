@@ -1,17 +1,24 @@
-from ..abstracts.UserAbstractService import UserService
-from ...dataaccess.concrete.Customer import Customer 
+from business.abstracts.UserAbstractService import UserService
+from dataaccess.concrete.Customer import Customer 
 
 
 class CustomerRepository(UserService):
-    def new_user(self, name, email, password):
+    @staticmethod
+    def new_user(name, email, password):
         if len(name) <5:
+            print("name error")
             raise ValueError("Name must be at least 5 characters long")
         elif email.find("@") == False:
+            print("email error")
             raise ValueError("Please enter your email address")
-        elif len(password) < 8:
+        elif len(str(password)) < 5:
+            print("password error")
             raise ValueError("Password must be at least 8 characters long")
-        return Customer.new_user(name, email, password)
-    def all_users(self):
+        Customer.new_user(name, email, password)
+        return "success"
+    @staticmethod
+    def all_users():
         return Customer.all_users()
-    def get_user_by_id(self, user_id):
+    @staticmethod
+    def get_user_by_id(user_id):
         return Customer.get_user_by_id(user_id)
